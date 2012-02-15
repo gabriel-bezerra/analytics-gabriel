@@ -16,6 +16,8 @@ regionOf <- function(uf) {
     }
 }
 
+# Tests
+
 stopifnot(regionOf("AC") == "Norte")
 stopifnot(regionOf("AL") == "Nordeste")
 stopifnot(regionOf("AP") == "Norte")
@@ -45,6 +47,4 @@ stopifnot(regionOf("SE") == "Nordeste")
 stopifnot(regionOf("TO") == "Norte")
 
 stopifnot(regionOf("") == "")
-
-print("All tests passed")
 

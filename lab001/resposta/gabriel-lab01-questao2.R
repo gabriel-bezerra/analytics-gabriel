@@ -1,10 +1,18 @@
+# Calcule a média salarial para cada região usando as informações adicionadas na Questão 1. Como
+# resultado, apresente uma tabela com o nome da região e a sua média salarial. A tabela deve ser
+# ordenada da região com a maior média salarial para a menor.
+
 source("region-function.R")
 
 data = read.csv("salarios-ti-formatted.csv")
 data.with.region = cbind(data, Regiao = mapply(regionOf, data$UF))
 
-aggregate(data.with.region, Regiao)
-#average.wage = data.frame()
+average.wage = with(data.with.region,
+                    aggregate(Salario.Bruto,
+                              list(Regiao),
+                              mean))
+names(average.wage) <- c("Regiao", "Media.Salario")
 
-#write.table(data.with.region, file="output-questao2.txt")
+ordered.average.wage = average.wage[order(average.wage$Media.Salario, decreasing = TRUE), ]
+write.table(ordered.average.wage, file="output-questao2.txt")
 

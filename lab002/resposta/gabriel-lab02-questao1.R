@@ -77,7 +77,7 @@ summary.tempo.ocioso = summary.tempo(TRUE)
 # gerar boxplot
 
 # gerar arquivo de texto com tabela de estatísticas
-write.table(summary.tempo.ocioso, file = "output-questao1-tempo-ocioso")
+write.table(summary.tempo.ocioso, file = "output-questao1-tempo-ocioso.txt")
 # gerar arquivo de imagem com os histogramas
 # gerar arquivo de imagem com boxplots
 
@@ -97,7 +97,7 @@ summary.tempo.ocupado = summary.tempo(FALSE)
 # gerar boxplot
 
 # gerar arquivo de texto com tabela de estatísticas
-write.table(summary.tempo.ocupado, file = "output-questao1-tempo-ocupado")
+write.table(summary.tempo.ocupado, file = "output-questao1-tempo-ocupado.txt")
 # gerar arquivo de imagem com os histogramas
 # gerar arquivo de imagem com boxplots
 

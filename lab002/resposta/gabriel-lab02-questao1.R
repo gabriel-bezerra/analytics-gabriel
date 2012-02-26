@@ -22,7 +22,6 @@ aggregate.tempo.ocioso <- function(funcao.de.agregacao, ...)
 
 
 # Calculo dos dados da questao
-
 summary.tempo <- function(ocioso) {
     #media
     media = aggregate.tempo(ocioso, mean)
@@ -61,7 +60,7 @@ summary.tempo <- function(ocioso) {
 }
 
 
-# Plota os histogramas para cada laboratorio
+# Plota os histogramas de intervalos de tempo para cada laboratorio
 histogramas.tempo <- function(ocioso)
     by(data[data$ociosa == ocioso, c("intervalo", "laboratorio")],
        data[data$ociosa == ocioso, ]$laboratorio,
@@ -79,6 +78,28 @@ histogramas.tempo <- function(ocioso)
            legend("topright", c("Média", "Mediana"), col = 1:2, lty = c(2, 4), lwd = 2)
        })
 
+histogramas.tempo.ocioso <- function(ocioso) histogramas.tempo(TRUE)
+histogramas.tempo.ocupado <- function(ocioso) histogramas.tempo(FALSE)
+
+
+# Plota os boxplots de intervalos de tempo para cada laboratorio
+boxplots.tempo <- function(ocioso) {
+    boxplot(intervalo ~ laboratorio,
+            data[data$ociosa == ocioso, c("intervalo", "laboratorio")],
+            outline = FALSE,
+            sub = paste("Este boxplot desconsidera valores maiores que Q3 + 1.5*IQR,",
+                        "para melhor visualização"),
+            main = paste("Tempo", ifelse(ocioso, "ocioso", "ocupado"),
+                         "das máquinas de cada laboratório"),
+            ylab = "Duração do intervalo",
+            xlab = "Laboratório",
+            cex.axis = 0.8)
+}
+
+boxplots.tempo.ocioso <- function(ocioso) boxplots.tempo(TRUE)
+boxplots.tempo.ocupado <- function(ocioso) boxplots.tempo(FALSE)
+
+
 
 # Duração do intervalo de tempo em que as máquinas estiveram ociosas, agrupadas por laboratório.
 
@@ -93,21 +114,23 @@ summary.tempo.ocioso = summary.tempo(TRUE)
 
 # gerar histograma
 ##OK
-
 # gerar boxplot
-
+##OK
 
 # gerar arquivo de texto com tabela de estatísticas
 write.table(summary.tempo.ocioso, file = "output-questao1-tempo-ocioso.txt")
 
 # gerar arquivo de imagem com os histogramas
-png(filename = "output-questao1-plot-tempo-ocioso.png", width = 2*720, height = 720)
+png(filename = "output-questao1-hist-tempo-ocioso.png", width = 2*720, height = 720)
 numero.de.histogramas = nlevels(data$laboratorio)
 par(mfcol = c(numero.de.histogramas, 1))
-    histogramas.tempo(TRUE)
+    histogramas.tempo.ocioso()
 dev.off()
 
 # gerar arquivo de imagem com boxplots
+png(filename = "output-questao1-boxplots-tempo-ocioso.png", width = 720, height = 720)
+    boxplots.tempo.ocioso()
+dev.off()
 
 
 # Duração do intervalo de tempo em que as máquinas estiveram ocupadas, agrupadas por laboratório.
@@ -123,19 +146,23 @@ summary.tempo.ocupado = summary.tempo(FALSE)
 
 # gerar histograma
 ##OK
-
 # gerar boxplot
+##OK
 
 # gerar arquivo de texto com tabela de estatísticas
 write.table(summary.tempo.ocupado, file = "output-questao1-tempo-ocupado.txt")
+
 # gerar arquivo de imagem com os histogramas
-png(filename = "output-questao1-plot-tempo-ocupado.png", width = 2*720, height = 720)
+png(filename = "output-questao1-hist-tempo-ocupado.png", width = 2*720, height = 720)
 numero.de.histogramas = nlevels(data$laboratorio)
 par(mfcol = c(numero.de.histogramas, 1))
-    histogramas.tempo(FALSE)
+    histogramas.tempo.ocupado()
 dev.off()
 
 # gerar arquivo de imagem com boxplots
+png(filename = "output-questao1-boxplots-tempo-ocupado.png", width = 720, height = 720)
+    boxplots.tempo.ocupado()
+dev.off()
 
 
 # Proporção do tempo em que as máquinas estiveram ocupadas (considerando os intervalos medidos),

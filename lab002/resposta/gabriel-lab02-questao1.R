@@ -61,6 +61,17 @@ summary.tempo <- function(ocioso) {
 }
 
 
+# Plota os histogramas para cada laboratorio
+histogramas.tempo <- function(ocioso)
+    by(data[data$ociosa == ocioso, ]$intervalo,
+       data[data$ociosa == ocioso, ]$laboratorio,
+       function(x) {
+           hist(x)
+       })
+
+histogramas.tempo(TRUE)
+histogramas.tempo(FALSE)
+
 
 # Duração do intervalo de tempo em que as máquinas estiveram ociosas, agrupadas por laboratório.
 

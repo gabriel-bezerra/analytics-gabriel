@@ -63,14 +63,21 @@ summary.tempo <- function(ocioso) {
 
 # Plota os histogramas para cada laboratorio
 histogramas.tempo <- function(ocioso)
-    by(data[data$ociosa == ocioso, ]$intervalo,
+    by(data[data$ociosa == ocioso, c("intervalo", "laboratorio")],
        data[data$ociosa == ocioso, ]$laboratorio,
        function(x) {
-           hist(x)
-       })
+           lab.name = levels(factor(x$laboratorio))
 
-histogramas.tempo(TRUE)
-histogramas.tempo(FALSE)
+           hist(x$intervalo,
+                main = paste("Tempo", ifelse(ocioso, "ocioso", "ocupado"), lab.name),
+                xlab = "Duração do intervalo",
+                breaks = "Scott",
+                freq = FALSE)
+
+           abline(v = mean(x$intervalo), col = 1, lty = 2, lwd = 2)
+           abline(v = median(x$intervalo), col = 2, lty = 4, lwd = 2)
+           legend("topright", c("Média", "Mediana"), col = 1:2, lty = c(2, 4), lwd = 2)
+       })
 
 
 # Duração do intervalo de tempo em que as máquinas estiveram ociosas, agrupadas por laboratório.
@@ -85,11 +92,21 @@ histogramas.tempo(FALSE)
 summary.tempo.ocioso = summary.tempo(TRUE)
 
 # gerar histograma
+##OK
+
 # gerar boxplot
+
 
 # gerar arquivo de texto com tabela de estatísticas
 write.table(summary.tempo.ocioso, file = "output-questao1-tempo-ocioso.txt")
+
 # gerar arquivo de imagem com os histogramas
+png(filename = "output-questao1-plot-tempo-ocioso.png", width = 2*720, height = 720)
+numero.de.histogramas = nlevels(data$laboratorio)
+par(mfcol = c(numero.de.histogramas, 1))
+    histogramas.tempo(TRUE)
+dev.off()
+
 # gerar arquivo de imagem com boxplots
 
 
@@ -105,11 +122,19 @@ write.table(summary.tempo.ocioso, file = "output-questao1-tempo-ocioso.txt")
 summary.tempo.ocupado = summary.tempo(FALSE)
 
 # gerar histograma
+##OK
+
 # gerar boxplot
 
 # gerar arquivo de texto com tabela de estatísticas
 write.table(summary.tempo.ocupado, file = "output-questao1-tempo-ocupado.txt")
 # gerar arquivo de imagem com os histogramas
+png(filename = "output-questao1-plot-tempo-ocupado.png", width = 2*720, height = 720)
+numero.de.histogramas = nlevels(data$laboratorio)
+par(mfcol = c(numero.de.histogramas, 1))
+    histogramas.tempo(FALSE)
+dev.off()
+
 # gerar arquivo de imagem com boxplots
 
 

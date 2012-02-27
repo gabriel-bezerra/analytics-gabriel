@@ -329,10 +329,33 @@ aggregate.mudancas.estado.por.laboratorio <- function(funcao, ...)
 summary.mudancas.estado = summary.from(aggregate.mudancas.estado.por.laboratorio)
 
 # gerar histograma
+histogramas.mudancas.estado <- function()
+    by(summary.mudancas.estado.por.maquina[, c("laboratorio", "mudancas.estado")],
+       summary.mudancas.estado.por.maquina$laboratorio,
+       function(x) {
+           nome.laboratorio = levels(factor(x$laboratorio))
+
+           hist(x$mudancas.estado,
+                freq = FALSE,
+                main = paste("Mudanças de estado das máquinas de", nome.laboratorio),
+                xlab = "Número de mudanças de estado das máquinas")
+
+           abline(v = mean(x$mudancas.estado), col = 1, lty=2, lwd = 2)
+           abline(v = median(x$mudancas.estado), col = 2, lty=4, lwd = 2)
+
+           legend("topright", c("Média", "Mediana"), col = 1:2, lty = c(2, 4), lwd = 2)
+       })
+
 # gerar boxplot
 
 # gerar arquivo de texto com tabela de estatísticas
 write.table(summary.mudancas.estado, file = "output-questao1-mudancas-estado.txt")
 
 # gerar arquivo de imagem com os histogramas
+png(filename = "output-questao1-hist-mudancas-estado.png", width = 720, height = 720)
+numero.de.histogramas = nlevels(summary.tempo.por.maquina$laboratorio)
+par(mfrow = c(numero.de.histogramas, 1))
+    histogramas.mudancas.estado()
+dev.off()
+
 # gerar arquivo de imagem com boxplots

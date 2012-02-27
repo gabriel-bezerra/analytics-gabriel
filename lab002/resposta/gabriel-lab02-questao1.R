@@ -347,6 +347,12 @@ histogramas.mudancas.estado <- function()
        })
 
 # gerar boxplot
+boxplots.mudancas.estado <- function()
+    boxplot(mudancas.estado ~ laboratorio,
+            summary.mudancas.estado.por.maquina,
+            main = "Número de mudanças de estado das máquinas",
+            xlab = "Laboratório",
+            cex.axis = 0.8)
 
 # gerar arquivo de texto com tabela de estatísticas
 write.table(summary.mudancas.estado, file = "output-questao1-mudancas-estado.txt")
@@ -359,3 +365,6 @@ par(mfrow = c(numero.de.histogramas, 1))
 dev.off()
 
 # gerar arquivo de imagem com boxplots
+png(filename = "output-questao1-boxplots-mudancas-estado.png", width = 720, height = 720)
+    boxplots.mudancas.estado()
+dev.off()

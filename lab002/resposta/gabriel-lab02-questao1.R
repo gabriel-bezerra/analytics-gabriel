@@ -273,7 +273,8 @@ write.table(summary.prop.ocupado, file = "output-questao1-prop-ocupado.txt")
 
 # gerar arquivo de imagem com os histogramas
 png(filename = "histograma-prop.png", width = 720, height = 720)
-par(mfrow = c(4, 1))
+numero.de.histogramas = nlevels(summary.tempo.por.maquina$laboratorio),
+par(mfrow = c(numero.de.histogramas, 1))
     histograma.proporcao.ocupado()
 dev.off()
 

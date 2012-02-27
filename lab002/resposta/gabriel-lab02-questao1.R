@@ -199,12 +199,14 @@ aggregate.proporcao.por.laboratorio <- function(funcao, ...) {
               funcao, ...)
 }
 
+proporcao.media.de.tempo.ocupado <-
+    data.frame(laboratorio = aggregate.tempo.ocioso(sum)$laboratorio,
+               x = aggregate.tempo.ocupado(sum)$x / (aggregate.tempo.ocioso(sum)$x
+                                                     + aggregate.tempo.ocupado(sum)$x))
+
 summary.proporcao.ocupado <- function() {
     #media
-    media = data.frame(laboratorio = aggregate.tempo.ocioso(sum)$laboratorio,
-                       x = aggregate.tempo.ocupado(sum)$x / (aggregate.tempo.ocioso(sum)$x
-                                                             + aggregate.tempo.ocupado(sum)$x))
-
+    media = proporcao.media.de.tempo.ocupado
     #mediana
     mediana = aggregate.proporcao.por.laboratorio(median)
     #minimo
@@ -259,9 +261,18 @@ histograma.proporcao.ocupado <- function() {
                 freq = FALSE,
                 main = paste("Proporção de tempo de máquina ocupado em", nome.laboratorio))
 
+           # Plota a reta da média
+           with(proporcao.media.de.tempo.ocupado[
+                    proporcao.media.de.tempo.ocupado$laboratorio == nome.laboratorio, ],
+                abline(v = x, col = 1, lty=2, lwd = 2))
+
+           # Plota a reta da mediana
+           abline(v = median(x$prop.ocupada), col = 2, lty=4, lwd = 2)
+
+           legend("topright", c("Média", "Mediana"), col = 1:2, lty = c(2, 4), lwd = 2)
+
            # TODO:
            # deixar os histogramas com eixo X em [0, 1]
-           # plotar a média e mediana e inserir gráfico delas
            # testar outras funcoes de quantidade de celulas no histograma
        })
 }
@@ -273,7 +284,7 @@ write.table(summary.prop.ocupado, file = "output-questao1-prop-ocupado.txt")
 
 # gerar arquivo de imagem com os histogramas
 png(filename = "histograma-prop.png", width = 720, height = 720)
-numero.de.histogramas = nlevels(summary.tempo.por.maquina$laboratorio),
+numero.de.histogramas = nlevels(summary.tempo.por.maquina$laboratorio)
 par(mfrow = c(numero.de.histogramas, 1))
     histograma.proporcao.ocupado()
 dev.off()

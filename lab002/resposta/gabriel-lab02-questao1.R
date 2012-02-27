@@ -272,9 +272,6 @@ histograma.proporcao.ocupado <- function() {
            abline(v = median(x$prop.ocupada), col = 2, lty=4, lwd = 2)
 
            legend("topright", c("Média", "Mediana"), col = 1:2, lty = c(2, 4), lwd = 2)
-
-           # TODO:
-           # deixar os histogramas com eixo X em [0, 1]
        })
 }
 
@@ -284,7 +281,7 @@ histograma.proporcao.ocupado <- function() {
 write.table(summary.prop.ocupado, file = "output-questao1-prop-ocupado.txt")
 
 # gerar arquivo de imagem com os histogramas
-png(filename = "histograma-prop.png", width = 720, height = 720)
+png(filename = "output-questao1-hist-proporcao-ocupado.png", width = 720, height = 720)
 numero.de.histogramas = nlevels(summary.tempo.por.maquina$laboratorio)
 par(mfrow = c(numero.de.histogramas, 1))
     histograma.proporcao.ocupado()

@@ -20,27 +20,26 @@ aggregate.tempo.ocupado <- function(funcao.de.agregacao, ...)
 aggregate.tempo.ocioso <- function(funcao.de.agregacao, ...)
     aggregate.tempo(TRUE, funcao.de.agregacao, ...)
 
-
 # Calculo dos dados da questao
-summary.tempo <- function(ocioso) {
+summary.from <- function(aggregate.function) {
     #media
-    media = aggregate.tempo(ocioso, mean)
+    media = aggregate.function(mean)
     #mediana
-    mediana = aggregate.tempo(ocioso, median)
+    mediana = aggregate.function(median)
     #minimo
-    minimo = aggregate.tempo(ocioso, min)
+    minimo = aggregate.function(min)
     #maximo
-    maximo = aggregate.tempo(ocioso, max)
+    maximo = aggregate.function(max)
     #1o quartil
-    primeiro.quartil = aggregate.tempo(ocioso, quantile, prob = c(0.25))
+    primeiro.quartil = aggregate.function(quantile, prob = 0.25)
     #3o quartil
-    terceiro.quartil = aggregate.tempo(ocioso, quantile, prob = c(0.75))
+    terceiro.quartil = aggregate.function(quantile, prob = 0.75)
     #5 percentil
-    cinco.percentil = aggregate.tempo(ocioso, quantile, prob = c(0.05))
+    cinco.percentil = aggregate.function(quantile, prob = 0.05)
     #95 percentil
-    noventa.e.cinco.percentil = aggregate.tempo(ocioso, quantile, prob = c(0.95))
+    noventa.e.cinco.percentil = aggregate.function(quantile, prob = 0.95)
     #desvio padrao
-    desvio.padrao = aggregate.tempo(ocioso, sd)
+    desvio.padrao = aggregate.function(sd)
     #IQR
     iqr = data.frame(primeiro.quartil$laboratorio, x = (terceiro.quartil$x - primeiro.quartil$x))
 
@@ -110,7 +109,7 @@ boxplots.tempo.ocupado <- function(ocioso) boxplots.tempo(FALSE)
 # 5-percentil e 95-percentil
 # desvio padrao
 # IQR
-summary.tempo.ocioso = summary.tempo(TRUE)
+summary.tempo.ocioso = summary.from(aggregate.tempo.ocioso)
 
 # gerar histograma
 ##OK
@@ -142,7 +141,7 @@ dev.off()
 # 5-percentil e 95-percentil
 # desvio padrao
 # IQR
-summary.tempo.ocupado = summary.tempo(FALSE)
+summary.tempo.ocupado = summary.from(aggregate.tempo.ocupado)
 
 # gerar histograma
 ##OK
@@ -299,7 +298,26 @@ png(filename = "output-questao1-boxplots-proporcao-ocupado.png", width = 720, he
     boxplots.proporcao.ocupado()
 dev.off()
 
+
 # Quantidade de vezes que as máquinas mudaram de estado, agrupadas por laboratório.
+
+summary.mudancas.estado.por.maquina <- function() {
+    # a maquina muda de estado n - 1 vezes. n = quantidade de estados registrados
+    mudancas.estado.por.maquina = with(data,
+                                       aggregate(data$ociosa,
+                                                 by = list(laboratorio, maquina),
+                                                 function(x) length(x) - 1))
+
+    names(mudancas.estado.por.maquina) <- c("laboratorio", "maquina", "mudancas.estado")
+
+    return(mudancas.estado.por.maquina)
+}
+summary.mudancas.estado.por.maquina <- summary.mudancas.estado.por.maquina()
+
+aggregate.mudancas.estado.por.laboratorio <- function(funcao, ...)
+    aggregate(summary.mudancas.estado.por.maquina$mudancas.estado,
+              list(laboratorio = summary.mudancas.estado.por.maquina$laboratorio),
+              funcao, ...)
 
 # media
 # mediana
@@ -308,10 +326,13 @@ dev.off()
 # 5-percentil e 95-percentil
 # desvio padrao
 # IQR
+summary.mudancas.estado = summary.from(aggregate.mudancas.estado.por.laboratorio)
 
 # gerar histograma
 # gerar boxplot
 
 # gerar arquivo de texto com tabela de estatísticas
+write.table(summary.mudancas.estado, file = "output-questao1-mudancas-estado.txt")
+
 # gerar arquivo de imagem com os histogramas
 # gerar arquivo de imagem com boxplots

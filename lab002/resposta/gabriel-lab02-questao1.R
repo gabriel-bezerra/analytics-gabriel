@@ -44,17 +44,17 @@ summary.tempo <- function(ocioso) {
     #IQR
     iqr = data.frame(primeiro.quartil$laboratorio, x = (terceiro.quartil$x - primeiro.quartil$x))
 
-    summary.data = cbind(laboratorio = media$laboratorio,
-                         media = media$x,
-                         mediana = mediana$x,
-                         minimo = minimo$x,
-                         maximo = maximo$x,
-                         primeiro.quartil = primeiro.quartil$x,
-                         terceiro.quartil = terceiro.quartil$x,
-                         cinco.percentil = cinco.percentil$x,
-                         noventa.e.cinco.percentil = noventa.e.cinco.percentil$x,
-                         desvio.padrao = desvio.padrao$x,
-                         iqr = iqr$x)
+    summary.data = data.frame(laboratorio = media$laboratorio,
+                              media = media$x,
+                              mediana = mediana$x,
+                              minimo = minimo$x,
+                              maximo = maximo$x,
+                              primeiro.quartil = primeiro.quartil$x,
+                              terceiro.quartil = terceiro.quartil$x,
+                              cinco.percentil = cinco.percentil$x,
+                              noventa.e.cinco.percentil = noventa.e.cinco.percentil$x,
+                              desvio.padrao = desvio.padrao$x,
+                              iqr = iqr$x)
 
     return(summary.data)
 }
@@ -168,6 +168,77 @@ dev.off()
 # Proporção do tempo em que as máquinas estiveram ocupadas (considerando os intervalos medidos),
 # agrupadas por laboratório
 
+summary.tempo.por.maquina <- function() {
+    summary.tempo.ocupado.por.maquina = with(data[data$ociosa == FALSE, ],
+                                             aggregate(data[data$ociosa == FALSE, ]$intervalo,
+                                                       by = list(laboratorio, maquina),
+                                                       sum))
+    names(summary.tempo.ocupado.por.maquina) <- c("laboratorio", "maquina", "tempo.ocupada")
+
+    summary.tempo.ocioso.por.maquina = with(data[data$ociosa == TRUE, ],
+                                            aggregate(data[data$ociosa == TRUE, ]$intervalo,
+                                                      by = list(laboratorio, maquina),
+                                                      sum))
+    names(summary.tempo.ocioso.por.maquina) <- c("laboratorio", "maquina", "tempo.ociosa")
+
+    summary.tempo.por.maquina = merge(summary.tempo.ocupado.por.maquina,
+                                      summary.tempo.ocioso.por.maquina)
+
+
+    summary.tempo.por.maquina$prop.ocupada = summary.tempo.por.maquina$tempo.ocupada /
+                                             (summary.tempo.por.maquina$tempo.ociosa +
+                                              summary.tempo.por.maquina$tempo.ocupada)
+
+    return(summary.tempo.por.maquina)
+}
+summary.tempo.por.maquina <- summary.tempo.por.maquina()
+
+aggregate.proporcao.por.laboratorio <- function(funcao, ...) {
+    aggregate(summary.tempo.por.maquina$prop.ocupada,
+              list(laboratorio = summary.tempo.por.maquina$laboratorio),
+              funcao, ...)
+}
+
+summary.proporcao.ocupado <- function() {
+    #media
+    media = data.frame(laboratorio = aggregate.tempo.ocioso(sum)$laboratorio,
+                       x = aggregate.tempo.ocupado(sum)$x / (aggregate.tempo.ocioso(sum)$x
+                                                             + aggregate.tempo.ocupado(sum)$x))
+
+    #mediana
+    mediana = aggregate.proporcao.por.laboratorio(median)
+    #minimo
+    minimo = aggregate.proporcao.por.laboratorio(min)
+    #maximo
+    maximo = aggregate.proporcao.por.laboratorio(max)
+    #1o quartil
+    primeiro.quartil = aggregate.proporcao.por.laboratorio(quantile, prob = 0.25)
+    #3o quartil
+    terceiro.quartil = aggregate.proporcao.por.laboratorio(quantile, prob = 0.75)
+    #5 percentil
+    cinco.percentil = aggregate.proporcao.por.laboratorio(quantile, prob = 0.05)
+    #95 percentil
+    noventa.e.cinco.percentil = aggregate.proporcao.por.laboratorio(quantile, prob = 0.95)
+    #desvio padrao
+    desvio.padrao = aggregate.proporcao.por.laboratorio(sd)
+    #IQR
+    iqr = data.frame(primeiro.quartil$laboratorio, x = (terceiro.quartil$x - primeiro.quartil$x))
+
+    summary.data = data.frame(laboratorio = media$laboratorio,
+                              media = media$x,
+                              mediana = mediana$x,
+                              minimo = minimo$x,
+                              maximo = maximo$x,
+                              primeiro.quartil = primeiro.quartil$x,
+                              terceiro.quartil = terceiro.quartil$x,
+                              cinco.percentil = cinco.percentil$x,
+                              noventa.e.cinco.percentil = noventa.e.cinco.percentil$x,
+                              desvio.padrao = desvio.padrao$x,
+                              iqr = iqr$x)
+
+    return(summary.data)
+}
+
 # media
 # mediana
 # minimo e maximo
@@ -175,11 +246,14 @@ dev.off()
 # 5-percentil e 95-percentil
 # desvio padrao
 # IQR
+summary.proporcao.ocupado = summary.proporcao.ocupado()
+summary.proporcao.ocupado$laboratorio
 
 # gerar histograma
 # gerar boxplot
 
 # gerar arquivo de texto com tabela de estatísticas
+write.table(summary.proporcao.ocupado, file = "output-questao1-prop-ocupado.txt")
 # gerar arquivo de imagem com os histogramas
 # gerar arquivo de imagem com boxplots
 

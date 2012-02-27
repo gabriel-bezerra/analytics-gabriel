@@ -246,15 +246,37 @@ summary.proporcao.ocupado <- function() {
 # 5-percentil e 95-percentil
 # desvio padrao
 # IQR
-summary.proporcao.ocupado = summary.proporcao.ocupado()
-summary.proporcao.ocupado$laboratorio
+summary.prop.ocupado = summary.proporcao.ocupado()
 
 # gerar histograma
+histograma.proporcao.ocupado <- function() {
+    by(summary.tempo.por.maquina[, c("laboratorio", "prop.ocupada")],
+       summary.tempo.por.maquina$laboratorio,
+       function(x) {
+           nome.laboratorio = levels(factor(x$laboratorio))
+
+           hist(x$prop.ocupada,
+                freq = FALSE,
+                main = paste("Proporção de tempo de máquina ocupado em", nome.laboratorio))
+
+           # TODO:
+           # deixar os histogramas com eixo X em [0, 1]
+           # plotar a média e mediana e inserir gráfico delas
+           # testar outras funcoes de quantidade de celulas no histograma
+       })
+}
+
 # gerar boxplot
 
 # gerar arquivo de texto com tabela de estatísticas
-write.table(summary.proporcao.ocupado, file = "output-questao1-prop-ocupado.txt")
+write.table(summary.prop.ocupado, file = "output-questao1-prop-ocupado.txt")
+
 # gerar arquivo de imagem com os histogramas
+png(filename = "histograma-prop.png", width = 720, height = 720)
+par(mfrow = c(4, 1))
+    histograma.proporcao.ocupado()
+dev.off()
+
 # gerar arquivo de imagem com boxplots
 
 # Quantidade de vezes que as máquinas mudaram de estado, agrupadas por laboratório.

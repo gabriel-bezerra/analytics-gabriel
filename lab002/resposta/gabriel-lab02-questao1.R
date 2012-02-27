@@ -260,7 +260,8 @@ histograma.proporcao.ocupado <- function() {
            hist(x$prop.ocupada,
                 freq = FALSE,
                 main = paste("Proporção de tempo de máquina ocupado em", nome.laboratorio),
-                xlab = "Proporção de tempo em que as máquinas estiveram ocupadas")
+                xlab = "Proporção de tempo em que as máquinas estiveram ocupadas",
+                breaks = "FD")
 
            # Plota a reta da média
            with(proporcao.media.de.tempo.ocupado[
@@ -274,7 +275,6 @@ histograma.proporcao.ocupado <- function() {
 
            # TODO:
            # deixar os histogramas com eixo X em [0, 1]
-           # testar outras funcoes de quantidade de celulas no histograma
        })
 }
 

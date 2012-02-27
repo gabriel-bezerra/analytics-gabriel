@@ -251,7 +251,7 @@ summary.proporcao.ocupado <- function() {
 summary.prop.ocupado = summary.proporcao.ocupado()
 
 # gerar histograma
-histograma.proporcao.ocupado <- function() {
+histogramas.proporcao.ocupado <- function() {
     by(summary.tempo.por.maquina[, c("laboratorio", "prop.ocupada")],
        summary.tempo.por.maquina$laboratorio,
        function(x) {
@@ -276,6 +276,13 @@ histograma.proporcao.ocupado <- function() {
 }
 
 # gerar boxplot
+boxplots.proporcao.ocupado <- function() {
+    boxplot(prop.ocupada ~ laboratorio,
+            summary.tempo.por.maquina,
+            main = "Proporção do tempo em que as máquinas estiveram ocupadas",
+            xlab = "Laboratório",
+            cex.axis = 0.8)
+}
 
 # gerar arquivo de texto com tabela de estatísticas
 write.table(summary.prop.ocupado, file = "output-questao1-prop-ocupado.txt")
@@ -284,10 +291,13 @@ write.table(summary.prop.ocupado, file = "output-questao1-prop-ocupado.txt")
 png(filename = "output-questao1-hist-proporcao-ocupado.png", width = 720, height = 720)
 numero.de.histogramas = nlevels(summary.tempo.por.maquina$laboratorio)
 par(mfrow = c(numero.de.histogramas, 1))
-    histograma.proporcao.ocupado()
+    histogramas.proporcao.ocupado()
 dev.off()
 
 # gerar arquivo de imagem com boxplots
+png(filename = "output-questao1-boxplots-proporcao-ocupado.png", width = 720, height = 720)
+    boxplots.proporcao.ocupado()
+dev.off()
 
 # Quantidade de vezes que as máquinas mudaram de estado, agrupadas por laboratório.
 

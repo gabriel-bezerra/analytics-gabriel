@@ -259,7 +259,8 @@ histograma.proporcao.ocupado <- function() {
 
            hist(x$prop.ocupada,
                 freq = FALSE,
-                main = paste("Proporção de tempo de máquina ocupado em", nome.laboratorio))
+                main = paste("Proporção de tempo de máquina ocupado em", nome.laboratorio),
+                xlab = "Proporção de tempo em que as máquinas estiveram ocupadas")
 
            # Plota a reta da média
            with(proporcao.media.de.tempo.ocupado[

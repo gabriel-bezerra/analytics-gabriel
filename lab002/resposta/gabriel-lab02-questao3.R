@@ -26,9 +26,12 @@ summary.tempo.por.maquina <- function() {
 }
 summary.tempo.por.maquina <- summary.tempo.por.maquina()
 
-top10.maquinas.ocupadas =
-    with(summary.tempo.por.maquina,
-         summary.tempo.por.maquina[order(prop.ocupada, decreasing = TRUE),
-                                   c("maquina", "laboratorio", "prop.ocupada")][1:10, ])
+# Remove outlier do LSD, na resposta da questão 2, quando discuti sobre os outliers da proporção de tempo ocupado,
+# explico por que considero esta máquina um outlier.
+summary.filtrado = subset(summary.tempo.por.maquina, maquina != "barbado_1.lsd.ufcg.edu.br@xmpp.ourgrid.org")
+
+summary.ordenado = summary.filtrado[order(summary.filtrado$prop.ocupada, decreasing = TRUE), ]
+
+top10.maquinas.ocupadas = summary.ordenado[1:10, c("maquina", "laboratorio", "prop.ocupada")]
 
 write.table(top10.maquinas.ocupadas, file = "output-questao3.txt")

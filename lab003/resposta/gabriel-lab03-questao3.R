@@ -41,3 +41,6 @@ print(summary(nova.amostra$reputation))
 # Dica: estude com cuidado o help das funções sample, ecdf e hist no R. Essas funções podem tornar esse exercício mais
 # fácil.
 
+png(filename = "output-questao3-qqplot.png", width = 960, height = 960)
+qqplot(usuarios$reputation, nova.amostra$reputation)
+dev.off()

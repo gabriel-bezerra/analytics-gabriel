@@ -2,7 +2,7 @@ usuarios = read.csv("askubuntu.csv")
 
 # Função de Massa de Probabilidade
 
-plot.fmp.up.to.q0.99 <- function(data, col.name, ...)
+plot.fmp <- function(data, col.name, ...)
     plot(prop.table(table(data[, col.name])),
          xlim = c(0, quantile(data[, col.name], 0.99)),
          main = paste("Função de massa de probabilidade para a variável", col.name),
@@ -14,10 +14,10 @@ plot.fmp.up.to.q0.99 <- function(data, col.name, ...)
 
 png(filename = "output-questao1-fdp-fdm.png", width = 960, height = 960)
 par(mfrow = c(2,2))
-plot.fmp.up.to.q0.99(usuarios, "reputation")
-plot.fmp.up.to.q0.99(usuarios, "views")
-plot.fmp.up.to.q0.99(usuarios, "up_votes")
-plot.fmp.up.to.q0.99(usuarios, "down_votes")
+plot.fmp(usuarios, "reputation")
+plot.fmp(usuarios, "views")
+plot.fmp(usuarios, "up_votes")
+plot.fmp(usuarios, "down_votes")
 dev.off()
 
 

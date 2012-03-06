@@ -1,5 +1,10 @@
 library("ggplot2")
 
+erro.intervalo.confianca <- function(n, desvio.padrao.amostral, nivel.de.significancia) {
+    # TODO: calculo para amostras menores que 30
+    qnorm(1 - (nivel.de.significancia / 2)) * (desvio.padrao.amostral / sqrt(n))
+}
+
 intervalo.de.confianca.para.a.media <- function(amostra, nivel.de.significancia) {
     tamanho.da.amostra = length(amostra)
     media.amostral = mean(amostra)
@@ -7,8 +12,7 @@ intervalo.de.confianca.para.a.media <- function(amostra, nivel.de.significancia)
 
     desvio.padrao.da.media = desvio.padrao.amostral / sqrt(tamanho.da.amostra)
 
-    # TODO: calcular a margem do intervalo
-    margem = 1
+    margem = erro.intervalo.confianca(tamanho.da.amostra, desvio.padrao.amostral, nivel.de.significancia)
 
     return(c(media.amostral - margem, media.amostral + margem))
 }

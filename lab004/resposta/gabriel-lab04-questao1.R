@@ -50,11 +50,18 @@ gastos.totais.por.regiao <- merge(ic.gastos.totais.por.regiao,
 
 gastos.totais.por.regiao
 
+
 # Produz a figura
 #png()
-ggplot(gastos.totais.por.regiao, aes(regiao, media)) + geom_bar()
+ggplot(gastos.totais.por.regiao, aes(regiao, media, ymin = ic[, 1], ymax = ic[, 2])) +
+    geom_bar(fill = "white") +
+    geom_errorbar()
 #dev.off()
 
+# TODO: colorir o gráfico
+# TODO: labels do gráfico
+# TODO: melhorar largura da barra de erro
+# TODO: produzir a imagem em png
 
 ## Um gráfico png com os intervalos de confiança das proporções de
 ## presenças dos deputados em sessões durante o ano, sabendo que o

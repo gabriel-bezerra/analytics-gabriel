@@ -1,9 +1,10 @@
 library("ggplot2")
 
-erro.intervalo.confianca.para.media <- function(n, desvio.padrao.amostral, nivel.de.significancia) {
-    # TODO: calculo para amostras menores que 30
-    qnorm(1 - (nivel.de.significancia / 2)) * (desvio.padrao.amostral / sqrt(n))
-}
+erro.intervalo.confianca.para.media <- function(n, desvio.padrao.amostral, nivel.de.significancia)
+    (desvio.padrao.amostral / sqrt(n)) *
+        ifelse(n < 30,
+               qt(1 - (nivel.de.significancia / 2), df = n - 1),
+               qnorm(1 - (nivel.de.significancia / 2)))
 
 intervalo.de.confianca.para.a.media <- function(amostra, nivel.de.significancia) {
     media.amostral = mean(amostra)
@@ -43,9 +44,31 @@ media.gastos.totais.por.regiao <-
               mean)
 names(media.gastos.totais.por.regiao) <- c("regiao", "media")
 
+# Quantidade
+n.gastos.totais.por.regiao <-
+    aggregate(dados$gastos.total,
+              list(regiao = dados$regiao),
+              length)
+names(n.gastos.totais.por.regiao) <- c("regiao", "n")
+
+# Desvio padrão
+sd.gastos.totais.por.regiao <-
+    aggregate(dados$gastos.total,
+              list(regiao = dados$regiao),
+              sd)
+names(sd.gastos.totais.por.regiao) <- c("regiao", "desvio.padrao")
+
 # Merge
 gastos.totais.por.regiao <- merge(ic.gastos.totais.por.regiao,
                                   media.gastos.totais.por.regiao,
+                                  by = c("regiao"))
+
+gastos.totais.por.regiao <- merge(gastos.totais.por.regiao,
+                                  n.gastos.totais.por.regiao,
+                                  by = c("regiao"))
+
+gastos.totais.por.regiao <- merge(gastos.totais.por.regiao,
+                                  sd.gastos.totais.por.regiao,
                                   by = c("regiao"))
 
 gastos.totais.por.regiao

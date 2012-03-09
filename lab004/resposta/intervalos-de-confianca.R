@@ -17,6 +17,11 @@ intervalo.de.confianca.para.a.media <- function(amostra, nivel.de.significancia)
 
 
 # Proporção
+sd.proporcao <- function(n.sucessos, n.ensaios) {
+    p.hat =  n.sucessos / n.ensaios
+    return(sqrt(p.hat * (1 - p.hat)))
+}
+
 erro.intervalo.confianca.para.a.proporcao <- function(p.hat, n.ensaios, nivel.de.significancia)
     sqrt((p.hat * (1 - p.hat)) / n.ensaios) *
         ifelse(n.ensaios * p.hat < 10,

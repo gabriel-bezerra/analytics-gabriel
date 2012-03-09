@@ -93,11 +93,6 @@ ggplot(gastos.totais.por.estado, aes(estado, 1000 * n, fill = estado)) + # Multi
 dev.off()
 
 
-# Ordenando os estados pela quantidade de deputados
-gastos.totais.por.estado$estado <- reorder(gastos.totais.por.estado$estado,
-                                           -gastos.totais.por.estado$desvio.padrao,
-                                           order = TRUE)
-
 png(filename = "output-questao3-gastos-por-estado-desvio-padrao.png", width = 960, height = 480)
 ggplot(gastos.totais.por.estado, aes(estado, desvio.padrao, fill = estado)) +
     geom_bar() +
@@ -110,4 +105,4 @@ dev.off()
 
 
 # Quais estados gastam menos que o AP?
-gastos.totais.por.estado[gastos.totais.por.estado$ic[, 2] < 123808.80,]
+gastos.totais.por.estado[gastos.totais.por.estado$ic[, 2] < 123808.80, ]

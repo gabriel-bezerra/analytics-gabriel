@@ -8,7 +8,7 @@ source("intervalos-de-confianca.R")
 
 dados <- read.csv(file = "dados-deputados.csv")
 
-nivel.de.significancia = 0.05
+nivel.de.significancia = 0.25
 
 
 ## Um gráfico png com os intervalos de confiança das médias dos gastos
@@ -71,7 +71,7 @@ gastos.plot = ggplot(gastos.totais.por.regiao, aes(regiao, media, fill = regiao)
                    title = "Média de gastos dos deputados por região em 2011")
 
 # Produz a figura
-png(filename = "output-questao1-gastos-por-regiao.png")
+png(filename = "output-questao2-gastos-por-regiao.png")
 print(gastos.plot)
 dev.off()
 
@@ -130,6 +130,6 @@ presenca.plot = ggplot(presenca.por.regiao, aes(regiao, prop.total, fill = regia
                        opts(legend.position = "none",
                             title = "Proporção de presença dos deputados por região em 2011")
 
-png(filename = "output-questao1-presenca-por-regiao.png")
+png(filename = "output-questao2-presenca-por-regiao.png")
 print(presenca.plot)
 dev.off()

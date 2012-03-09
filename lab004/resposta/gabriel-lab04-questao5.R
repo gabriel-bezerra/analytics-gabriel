@@ -83,5 +83,43 @@ print(presenca.plot)
 dev.off()
 
 
-# TODO
-# Análise dos deputados extremos do DF (mínimo) e do AP (máximo)
+# Análise dos deputados extremos do estado de maior presença (mínimo) e do estado de menor presença (máximo)
+
+# Identificação dos deputados
+estado.maior.presenca = with(presenca.por.estado,
+                             presenca.por.estado[proporcao == max(proporcao),]$estado)
+estado.menor.presenca = with(presenca.por.estado,
+                             presenca.por.estado[proporcao == min(proporcao),]$estado)
+
+deputados.estado.maior.presenca = with(dados,
+                                       dados[estado == as.character(estado.maior.presenca), ])
+deputados.estado.menor.presenca = with(dados,
+                                       dados[estado == as.character(estado.menor.presenca), ])
+
+deputado.menor.presenca.estado.maior.presenca =
+    with(deputados.estado.maior.presenca,
+         deputados.estado.maior.presenca[presencas.total == min(presencas.total), ])
+deputado.maior.presenca.estado.menor.presenca =
+    with(deputados.estado.menor.presenca,
+         deputados.estado.menor.presenca[presencas.total == max(presencas.total), ])
+
+# Comparação através de seus intervalos de confiança
+ic.dep.menor.est.maior = with(deputado.menor.presenca.estado.maior.presenca,
+                              intervalo.de.confianca.para.a.proporcao(presencas.total,
+                                                                      numero.de.sessoes,
+                                                                      0.95))
+ic.dep.maior.est.menor = with(deputado.maior.presenca.estado.menor.presenca,
+                              intervalo.de.confianca.para.a.proporcao(presencas.total,
+                                                                      numero.de.sessoes,
+                                                                      0.95))
+
+print(paste("Deputado de menor presença do estado de maior presença:",
+            deputado.menor.presenca.estado.maior.presenca$nome))
+print(paste("Intervalo de confiança da assiduidade dele:",
+            ic.dep.menor.est.maior[1], "-", ic.dep.menor.est.maior[2]))
+
+print(paste("Deputado de maior presença do estado de menor presença:",
+            deputado.maior.presenca.estado.menor.presenca$nome))
+print(paste("Intervalo de confiança da assiduidade dele:",
+            ic.dep.maior.est.menor[1], "-", ic.dep.maior.est.menor[2]))
+

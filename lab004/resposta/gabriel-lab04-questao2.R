@@ -3,8 +3,12 @@ library("ggplot2")
 source("intervalos-de-confianca.R")
 
 
-## 1. Implemente um script R que plota dois gráficos:
-## Para gerar os gráficos acima, considere nível de significância de 5%.
+## 2. Use o mesmo script anterior para gerar os mesmos gráficos da questão 2,
+## porém considerando o nível de significância de 25%. Compare os gráficos
+## gerados na questão 2 e nesta questão. O que aconteceu com os seus intervalos
+## de confiança? ao aumentar o nível de significância estatística? E a sua análise
+## dos intervalos, mudou? É possível identificar alguma relação entre gastos e
+## assiduidade? Comente.
 
 dados <- read.csv(file = "dados-deputados.csv")
 

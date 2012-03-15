@@ -16,26 +16,23 @@ dados <- read.table(file = arquivo.de.dados, header = TRUE)
 ## Para cada item solicitado deve ser gerada uma figura no formato *.png, portanto, ao
 ## todo devem ser geradas 3 figuras.
 
-## (i) intervalos em que as máquinas estiveram ocupadas;
-
-intervalos.ocupadas <- dados[dados$ociosa == FALSE, ]
-
 # FDA
-fda.plot <- function() {
-    plot(ecdf(intervalos.ocupadas$intervalo),
-         main = "FDA para os intervalos em que as máquinas estiveram ocupadas",
-         xlab = "Tempo ocupada",
+fda.plot <- function(dados, titulo) {
+    plot(ecdf(dados),
+         main = titulo,
+         xlab = "Tempo",
          las = 1)
 }
 
 # FDP
-n = length(intervalos.ocupadas$intervalo)
-media = mean(intervalos.ocupadas$intervalo)
-desvio.padrao = sd(intervalos.ocupadas$intervalo)
 
-fdp.plot <- function() {
-    plot(density(intervalos.ocupadas$intervalo), col = "blue", lwd = 1,
-         main = "FDPs para os intervalos em que as máquinas ficaram ocupadas",
+fdp.norm.plot <- function(dados, titulo) {
+    n = length(dados)
+    media = mean(dados)
+    desvio.padrao = sd(dados)
+
+    plot(density(dados), col = "blue", lwd = 1,
+         main = titulo,
          las = 1)
 
     lines(density(rnorm(n, media, desvio.padrao)), col = "red", lwd = 1)
@@ -43,21 +40,35 @@ fdp.plot <- function() {
 }
 
 # qqnorm
-qqnorm.plot <- function() {
-    qqnorm(intervalos.ocupadas$intervalo, las = 1)
-    qqline(intervalos.ocupadas$intervalo)
+qqnorm.plot <- function(dados) {
+    qqnorm(dados, las = 1)
+    qqline(dados)
 }
 
-# Figura
+
+## (i) intervalos em que as máquinas estiveram ocupadas;
+
+intervalos.ocupadas <- dados[dados$ociosa == FALSE, ]
+
 png(filename = "output-questao1-i.png", width = 480, height = 3 * 480)
 par(mfrow = c(3,1))
-    fda.plot()
-    fdp.plot()
-    qqnorm.plot()
+    fda.plot(intervalos.ocupadas$intervalo, "FDA para os intervalos em que as máquinas estiveram ocupadas")
+    fdp.norm.plot(intervalos.ocupadas$intervalo, "FDPs para os intervalos em que as máquinas estiveram ocupadas")
+    qqnorm.plot(intervalos.ocupadas$intervalo)
 dev.off()
 
 
 ## (ii) intervalos em que as máquinas estiveram ociosas;
+
+intervalos.ociosas <- dados[dados$ociosa == TRUE, ]
+
+png(filename = "output-questao1-ii.png", width = 480, height = 3 * 480)
+par(mfrow = c(3,1))
+    fda.plot(intervalos.ociosas$intervalo, "FDAs para os intervalos em que as máquinas estiveram ociosas")
+    fdp.norm.plot(intervalos.ociosas$intervalo, "FDPs para os intervalos em que as máquinas estiveram ociosas")
+    qqnorm.plot(intervalos.ociosas$intervalo)
+dev.off()
+
 
 ## (iii) intervalos em que as máquinas estiveram ociosas separados por laboratório.
 

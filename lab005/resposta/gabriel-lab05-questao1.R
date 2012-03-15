@@ -99,11 +99,3 @@ par(mfrow = c(numero.de.laboratorios,3))
        })
 dev.off()
 
-
-## Gere os gráficos utilizando o seu script. Escreva um relatório apresentando os gráficos
-## que você obteve e discutindo: (i) que relações você observa entre os gráficos FDA,
-## FDP e qqnorm, apresente exemplos de alguns comportamentos observados no qqnorm
-## e de como eles se manifestam na FDA e/ou na FDP; (ii) com base no qqnorm, na sua
-## opinião, qual cenário avaliado mais se assemelha ao esperado de uma distribuição
-## normal e qual menos se assemelha.
-

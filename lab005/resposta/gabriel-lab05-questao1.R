@@ -40,8 +40,10 @@ fdp.norm.plot <- function(dados, titulo) {
 }
 
 # qqnorm
-qqnorm.plot <- function(dados) {
-    qqnorm(dados, las = 1)
+qqnorm.plot <- function(dados, titulo) {
+    qqnorm(dados,
+           main = titulo,
+           las = 1)
     qqline(dados)
 }
 
@@ -54,7 +56,8 @@ png(filename = "output-questao1-i.png", width = 480, height = 3 * 480)
 par(mfrow = c(3,1))
     fda.plot(intervalos.ocupadas$intervalo, "FDA para os intervalos em que as máquinas estiveram ocupadas")
     fdp.norm.plot(intervalos.ocupadas$intervalo, "FDPs para os intervalos em que as máquinas estiveram ocupadas")
-    qqnorm.plot(intervalos.ocupadas$intervalo)
+    qqnorm.plot(intervalos.ocupadas$intervalo,
+                "Normal Q-Q Plot para os intervalos em que as máquinas estiveram ocupadas")
 dev.off()
 
 
@@ -66,11 +69,35 @@ png(filename = "output-questao1-ii.png", width = 480, height = 3 * 480)
 par(mfrow = c(3,1))
     fda.plot(intervalos.ociosas$intervalo, "FDAs para os intervalos em que as máquinas estiveram ociosas")
     fdp.norm.plot(intervalos.ociosas$intervalo, "FDPs para os intervalos em que as máquinas estiveram ociosas")
-    qqnorm.plot(intervalos.ociosas$intervalo)
+    qqnorm.plot(intervalos.ociosas$intervalo,
+                "Normal Q-Q Plot para os intervalos em que as máquinas estiveram ociosas")
 dev.off()
 
 
 ## (iii) intervalos em que as máquinas estiveram ociosas separados por laboratório.
+
+numero.de.laboratorios = length(levels(dados$laboratorio))
+
+png(filename = "output-questao1-iii.png", width = 3 * 480, height = numero.de.laboratorios * 480)
+par(mfrow = c(numero.de.laboratorios,3))
+    by(intervalos.ociosas[, c("intervalo", "laboratorio")],
+       list(laboratorio = intervalos.ociosas$laboratorio),
+       function(x) {
+           nome.do.laboratorio = levels(factor(x$laboratorio))[1]
+
+           fda.plot(x$intervalo,
+                    paste("FDAs para os intervalos em que as máquinas de\n",
+                          nome.do.laboratorio, "estiveram ociosas"))
+
+           fdp.norm.plot(x$intervalo,
+                         paste("FDPs para os intervalos em que as máquinas de\n",
+                               nome.do.laboratorio, "estiveram ociosas"))
+
+           qqnorm.plot(x$intervalo,
+                       paste("Normal Q-Q Plot para os intervalos em que as máquinas de\n",
+                             nome.do.laboratorio, "estiveram ociosas"))
+       })
+dev.off()
 
 
 ## Gere os gráficos utilizando o seu script. Escreva um relatório apresentando os gráficos

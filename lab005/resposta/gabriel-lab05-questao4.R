@@ -59,16 +59,29 @@ rbind(linha.de.resultado.para(tempo.ocupadas),
       linha.de.resultado.para(log.tempo.ociosas))
 
 
+fdp.norm.plot <- function(dados, titulo) {
+    n = length(dados)
+    media = mean(dados)
+    desvio.padrao = sd(dados)
+
+    plot(density(dados), col = "blue", lwd = 1,
+         main = titulo,
+         las = 1)
+
+    lines(density(rnorm(n, media, desvio.padrao)), col = "red", lwd = 1)
+    legend("topright", c("Real", "Normal"), col = c("blue", "red"), lwd = 1)
+}
+
 # Plota as distribuições
 png(file = "output-questao4.png", width = 2 * 480, height = 3 * 480)
 par(mfrow = c(3,2))
-    plot(density(tempo.ocupadas))
-    plot(density(tempo.ociosas))
+    fdp.norm.plot(tempo.ocupadas, "FDP para tempo.ocupadas")
+    fdp.norm.plot(tempo.ociosas, "FDP para tempo.ociosas")
 
-    plot(density(sqrt.tempo.ocupadas))
-    plot(density(sqrt.tempo.ociosas))
+    fdp.norm.plot(sqrt.tempo.ocupadas, "FDP para srqt.tempo.ocupadas")
+    fdp.norm.plot(sqrt.tempo.ociosas, "FDP para srqt.tempo.ociosas")
 
-    plot(density(log.tempo.ocupadas))
-    plot(density(log.tempo.ociosas))
+    fdp.norm.plot(log.tempo.ocupadas, "FDP para log.tempo.ocupadas")
+    fdp.norm.plot(log.tempo.ociosas, "FDP para log.tempo.ociosas")
 dev.off()
 

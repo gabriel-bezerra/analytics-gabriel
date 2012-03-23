@@ -71,32 +71,53 @@ dev.off()
 # Verificando as premissas...
 
 # ...Normalidade
-shapiro.test(dados.gzt.pb$velocidade)
-shapiro.test(dados.gzt.sp$velocidade)
-shapiro.test(dados.gzt.rj$velocidade)
+normalidade.pb <- shapiro.test(dados.gzt.pb$velocidade)
+normalidade.sp <- shapiro.test(dados.gzt.sp$velocidade)
+normalidade.rj <- shapiro.test(dados.gzt.rj$velocidade)
+
+normalidade.pb
+normalidade.sp
+normalidade.rj
 
 # ...Homoscedasticidade
-bartlett.test(list(dados.gzt.pb$velocidade,
-                   dados.gzt.sp$velocidade,
-                   dados.gzt.rj$velocidade))
+homoscedasticidade <- bartlett.test(list(dados.gzt.pb$velocidade,
+                                         dados.gzt.sp$velocidade,
+                                         dados.gzt.rj$velocidade))
+homoscedasticidade
 
 # Teste ANOVA
 valores.empilhados <- stack(data.frame(pb = dados.gzt.pb$velocidade,
                                        sp = dados.gzt.sp$velocidade,
                                        rj = dados.gzt.rj$velocidade))
 
-oneway.test(values ~ ind,
-            valores.empilhados,
-            var.equal = TRUE) # Como o teste de Bartlett forneceu um p-value alto (> 0.4),
-                              # podemos assumir que a variância é a mesma.
+analise.variancia <- oneway.test(values ~ ind,
+                                 valores.empilhados,
+                                 var.equal = TRUE) # Como o teste de Bartlett forneceu um p-value alto (> 0.4),
+                                                   # podemos assumir que a variância é a mesma.
+analise.variancia
 
 
 # Como o teste ANOVA mostrou que há diferença de velocidade entre os estados, comparamos os estados entre si. Para isso,
 # usamos o pairwise.t.test.
 
-pairwise.t.test(valores.empilhados$values,
+entre.pares <- pairwise.t.test(valores.empilhados$values,
                 valores.empilhados$ind,
                 alternative = "greater", # Estamos interessados em saber qual estado possui maior velocidade.
                 paired = FALSE,          # As amostras não são pareadas por originarem de meses diferentes.
                 p.adj = "none")          # Faremos os testes sem ajustes sobre o p-value.
+entre.pares
 
+
+# Saida para arquivo de texto
+source("linha-de-resultados.R")
+
+resultados <- rbind(linha.de.resultados.para(normalidade.pb),
+                    linha.de.resultados.para(normalidade.sp),
+                    linha.de.resultados.para(normalidade.rj),
+                    linha.de.resultados.para(homoscedasticidade))
+
+write.table(resultados, file = "output-questao3.txt")
+
+# Há problemas em imprimir os resultados deste teste junto com os outros
+write.table(linha.de.resultados.para(entre.pares),
+            file = "output-questao3-post-hoc.txt")

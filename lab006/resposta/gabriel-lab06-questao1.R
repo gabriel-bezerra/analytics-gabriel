@@ -30,17 +30,21 @@ media.icmin.icmax = data.frame(provedor = c("GZT", "Ola"),
                                ic.min = ics[, 1],
                                ic.max = ics[, 2])
 
-ggplot(media.icmin.icmax, aes(x = provedor,
-                              y = media,
-                              ymin = ic.min,
-                              ymax = ic.max,
-                              fill = provedor)) +
-    geom_bar() +
-    geom_errorbar(aes(width = 0.2)) +
-    opts(title = "Intervalos de confiança para a média de velocidade dos provedores",
-         legend.position = "none") +
-    ylab("Média") +
-    xlab("Provedor")
+grafico <- ggplot(media.icmin.icmax, aes(x = provedor,
+                                         y = media,
+                                         ymin = ic.min,
+                                         ymax = ic.max,
+                                         fill = provedor)) +
+           geom_bar() +
+           geom_errorbar(aes(width = 0.2)) +
+           opts(title = "Intervalos de confiança para a média de velocidade dos provedores",
+                legend.position = "none") +
+           ylab("Média") +
+           xlab("Provedor")
+
+png(file = "output-questao1.png")
+print(grafico)
+dev.off()
 
 
 # A comparação dos intervalos de confiança para as médias não foi conclusiva, há sobreposição de intervalos, porém

@@ -10,10 +10,21 @@ dados.pb.gzt <- dados.pb[dados.pb$provedor == "GZT", ]
 dados.pb.ola <- dados.pb[dados.pb$provedor == "Ola", ]
 
 
-t.test(dados.pb.gzt$velocidade,
-       mu = 50,
-       alternative = "less")
+teste.gzt <- t.test(dados.pb.gzt$velocidade,
+                    mu = 50,
+                    alternative = "less")
+teste.gzt
 
-t.test(dados.pb.ola$velocidade,
-       mu = 50,
-       alternative = "less")
+teste.ola <- t.test(dados.pb.ola$velocidade,
+                    mu = 50,
+                    alternative = "less")
+teste.ola
+
+
+# Saida para arquivo de texto
+source("linha-de-resultados.R")
+
+resultados <- rbind(linha.de.resultados.para(teste.gzt),
+                    linha.de.resultados.para(teste.ola))
+
+write.table(resultados, file = "output-questao2.txt")

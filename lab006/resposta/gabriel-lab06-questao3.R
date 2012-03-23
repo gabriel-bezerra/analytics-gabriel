@@ -118,6 +118,7 @@ resultados <- rbind(linha.de.resultados.para(normalidade.pb),
 
 write.table(resultados, file = "output-questao3.txt")
 
-# Há problemas em imprimir os resultados deste teste junto com os outros
+# Há problemas em imprimir os resultados deste teste junto com os outros por causa dos nomes das colunas, que são
+# diferentes
 write.table(linha.de.resultados.para(entre.pares),
             file = "output-questao3-post-hoc.txt")

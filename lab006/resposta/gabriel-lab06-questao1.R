@@ -59,16 +59,27 @@ dev.off()
 # Verificando as premissas...
 
 # ...Normalidade
-shapiro.test(dados.pb.gzt$velocidade)
-shapiro.test(dados.pb.ola$velocidade)
+normalidade.gzt <- shapiro.test(dados.pb.gzt$velocidade)
+normalidade.ola <- shapiro.test(dados.pb.ola$velocidade)
+normalidade.gzt
+normalidade.ola
 
 # ...Homoscedasticidade
-bartlett.test(list(dados.pb.gzt$velocidade, dados.pb.ola$velocidade))
+homoscedasticidade <- bartlett.test(list(dados.pb.gzt$velocidade, dados.pb.ola$velocidade))
+homoscedasticidade
 
 
 # Teste de igualdade de médias
-t.test(dados.pb.gzt$velocidade, dados.pb.ola$velocidade,
-       paired = TRUE,
-       var.equal = TRUE) # Como o teste de Bartlett forneceu um p-value alto (> 0.7),
-                         # podemos assumir que a variância é a mesma.
+igualdade.de.medias <- t.test(dados.pb.gzt$velocidade, dados.pb.ola$velocidade,
+                              paired = TRUE,
+                              var.equal = TRUE) # Como o teste de Bartlett forneceu um p-value alto (> 0.7),
+                                                # podemos assumir que a variância é a mesma.
 
+source("linha-de-resultados.R")
+
+resultados <- rbind(linha.de.resultados.para(normalidade.gzt),
+                    linha.de.resultados.para(normalidade.ola),
+                    linha.de.resultados.para(homoscedasticidade),
+                    linha.de.resultados.para(igualdade.de.medias))
+
+write.table(resultados, file = "output-questao1.txt")

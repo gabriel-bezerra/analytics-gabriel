@@ -87,3 +87,12 @@ oneway.test(values ~ ind,
                               # podemos assumir que a variância é a mesma.
 
 
+# Como o teste ANOVA mostrou que há diferença de velocidade entre os estados, comparamos os estados entre si. Para isso,
+# usamos o pairwise.t.test.
+
+pairwise.t.test(valores.empilhados$values,
+                valores.empilhados$ind,
+                alternative = "greater", # Estamos interessados em saber qual estado possui maior velocidade.
+                paired = FALSE,          # As amostras não são pareadas por originarem de meses diferentes.
+                p.adj = "none")          # Faremos os testes sem ajustes sobre o p-value.
+

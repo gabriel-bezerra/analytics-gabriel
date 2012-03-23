@@ -42,17 +42,21 @@ media.icmin.icmax = data.frame(estado = c("PB", "SP", "RJ"),
                                ic.min = ics[, 1],
                                ic.max = ics[, 2])
 
-ggplot(media.icmin.icmax, aes(x = estado,
-                              y = media,
-                              ymin = ic.min,
-                              ymax = ic.max,
-                              fill = estado)) +
-    geom_bar() +
-    geom_errorbar(aes(width = 0.2)) +
-    opts(title = "Intervalos de confiança para a média de velocidade do GZT",
-         legend.position = "none") +
-    ylab("Média") +
-    xlab("Estado")
+grafico <- ggplot(media.icmin.icmax, aes(x = estado,
+                                         y = media,
+                                         ymin = ic.min,
+                                         ymax = ic.max,
+                                         fill = estado)) +
+           geom_bar() +
+           geom_errorbar(aes(width = 0.2)) +
+           opts(title = "Intervalos de confiança para a média de velocidade do GZT",
+                legend.position = "none") +
+           ylab("Média") +
+           xlab("Estado")
+
+png(file = "output-questao3.png")
+print(grafico)
+dev.off()
 
 
 # A comparação dos intervalos de confiança leva a crer que as médias de velocidades dos estados são diferentes, pois os

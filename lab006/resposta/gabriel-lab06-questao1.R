@@ -74,6 +74,7 @@ igualdade.de.medias <- t.test(dados.pb.gzt$velocidade, dados.pb.ola$velocidade,
                               paired = TRUE,
                               var.equal = TRUE) # Como o teste de Bartlett forneceu um p-value alto (> 0.7),
                                                 # podemos assumir que a variância é a mesma.
+igualdade.de.medias
 
 # Saida para arquivo de texto
 source("linha-de-resultados.R")

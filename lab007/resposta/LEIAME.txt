@@ -1,0 +1,2 @@
+Antes de rodar o script resposta.R, rode baixa-e-trata-dados.sh. Este obtem os dados usados pelo script de resposta e
+trata-os para que fiquem em UTF-8, assim evita problemas de tratamento dos dados pelo R.

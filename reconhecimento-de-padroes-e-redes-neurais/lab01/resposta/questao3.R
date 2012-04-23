@@ -1,0 +1,32 @@
+require("ggplot2")
+
+dados <- read.csv(commandArgs(trailingOnly = TRUE))[, c("largura.petala", "comprimento.petala", "classe")]
+
+grafico <- ggplot(dados, aes(x = largura.petala, y = comprimento.petala, colour = dados$classe)) +
+               geom_point() +
+               geom_abline(intercept = 2.5, slope = 0) +  # Reta que separa a iris setosa das demais
+               geom_abline(intercept = 7.7, slope = -1.75, colour = "red") # Reta que separa a iris virginica e a
+                                                                           # versicolor.
+
+classificacao <- function(padrao)
+    ifelse(padrao$comprimento.petala < 2.5,
+           "Iris-setosa",
+           ifelse(padrao$comprimento.petala < (-1.75*padrao$largura.petala + 7.7),
+                  "Iris-versicolor",
+                  "Iris-virginica")
+    )
+
+#FP, TP, FN, TN
+sapply(levels(dados$classe),
+       function(classe) {
+           TP <- classificacao(dados[dados$classe == classe, ]) == classe
+           FP <- classificacao(dados[dados$classe != classe, ]) == classe
+           TN <- classificacao(dados[dados$classe != classe, ]) != classe
+           FN <- classificacao(dados[dados$classe == classe, ]) != classe
+
+           list(TP = length(which(TP)),
+                FP = length(which(FP)),
+                TN = length(which(TN)),
+                FN = length(which(FN)))
+       })
+

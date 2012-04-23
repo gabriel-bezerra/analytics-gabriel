@@ -24,9 +24,14 @@ sapply(levels(dados$classe),
            TN <- classificacao(dados[dados$classe != classe, ]) != classe
            FN <- classificacao(dados[dados$classe == classe, ]) != classe
 
+           P <- classificacao(dados[dados$classe == classe, ])
+           N <- classificacao(dados[dados$classe != classe, ])
+
            list(TP = length(which(TP)),
                 FP = length(which(FP)),
                 TN = length(which(TN)),
-                FN = length(which(FN)))
+                FN = length(which(FN)),
+                TPR = length(which(TP)) / length(P),
+                FPR = length(which(FP)) / length(N))
        })
 

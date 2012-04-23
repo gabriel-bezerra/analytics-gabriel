@@ -1,6 +1,6 @@
 require("lattice")
 
-dados <- read.csv("iris.data.csv")
+dados <- read.csv(commandArgs(trailingOnly = TRUE))
 
 grafico <- splom(dados, group = dados$classe)
 

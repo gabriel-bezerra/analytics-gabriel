@@ -1,0 +1,24 @@
+q1-b-a 3
+
+Time taken to build model: 9.46 seconds
+Time taken to test model on training data: 0.34 seconds
+
+=== Error on training data ===
+
+Correctly Classified Instances        4295               93.3493 %
+Incorrectly Classified Instances       306                6.6507 %
+Kappa statistic                          0.8602
+Mean absolute error                      0.0784
+Root mean squared error                  0.2421
+Relative absolute error                 16.4233 %
+Root relative squared error             49.5541 %
+Total Number of Instances             4601     
+
+
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.904     0.047      0.925     0.904     0.915      0.967    1
+                 0.953     0.096      0.939     0.953     0.946      0.967    0
+Weighted Avg.    0.933     0.077      0.933     0.933     0.933      0.967
+

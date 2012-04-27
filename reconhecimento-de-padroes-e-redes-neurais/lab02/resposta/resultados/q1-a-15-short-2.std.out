@@ -1,0 +1,58 @@
+q1-a-15-short 2
+
+Time taken to build model: 6.87 seconds
+Time taken to test model on training split: 0.17 seconds
+
+=== Error on training split ===
+
+Correctly Classified Instances        2773               91.3072 %
+Incorrectly Classified Instances       264                8.6928 %
+Kappa statistic                          0.8137
+Mean absolute error                      0.115 
+Root mean squared error                  0.2688
+Relative absolute error                 24.0932 %
+Root relative squared error             55.0065 %
+Total Number of Instances             3037     
+
+
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.824     0.029      0.948     0.824     0.882      0.969    1
+                 0.971     0.176      0.895     0.971     0.931      0.969    0
+Weighted Avg.    0.913     0.118      0.916     0.913     0.912      0.969
+
+
+=== Confusion Matrix ===
+
+    a    b   <-- classified as
+  986  210 |    a = 1
+   54 1787 |    b = 0
+
+
+=== Error on test split ===
+
+Correctly Classified Instances        1418               90.665  %
+Incorrectly Classified Instances       146                9.335  %
+Kappa statistic                          0.7995
+Mean absolute error                      0.1204
+Root mean squared error                  0.2767
+Relative absolute error                 25.2162 %
+Root relative squared error             56.6232 %
+Total Number of Instances             1564     
+
+
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.809     0.03       0.947     0.809     0.872      0.966    1
+                 0.97      0.191      0.886     0.97      0.926      0.966    0
+Weighted Avg.    0.907     0.127      0.91      0.907     0.905      0.966
+
+
+=== Confusion Matrix ===
+
+   a   b   <-- classified as
+ 499 118 |   a = 1
+  28 919 |   b = 0
+

@@ -28,3 +28,12 @@ tamanho.sem.nas = tamanho.com.nas - 3
 
 dados.de.venda <- head(dados.de.venda.com.nas, tamanho.sem.nas)
 
+
+# Gráfico para verificar estacionariedade
+
+png(filename = "questao1.serie-normalizada.png")
+    plot(cbind("Tempo" = seq(1:nrow(dados.normalizados)),
+               "Série" = dados.normalizados[,1]),
+         type="l",
+         las=1)
+dev.off()

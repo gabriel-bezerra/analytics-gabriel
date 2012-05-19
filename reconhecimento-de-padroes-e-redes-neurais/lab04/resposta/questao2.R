@@ -1,19 +1,11 @@
 source("pre-treinamento.R")
 
-model <- mlp(dados.de.treinamento$inputsTrain,
-             dados.de.treinamento$targetsTrain,
+mlp.model <- mlpModel(1, 100, 0.3)
 
-             size=0, learnFuncParams = 0.3, maxit=100,
+mlp.sse = ssePara(mlp.model, dados.de.treinamento)
+mlp.rmse = rmsePara(mlp.model, dados.de.treinamento)
 
-             inputsTest = dados.de.treinamento$inputsTest,
-             targetsTest = dados.de.treinamento$targetsTest)
+print(mlp.sse)
+print(mlp.rmse)
 
-
-sse = ssePara(model, dados.de.treinamento)
-rmse = rmsePara(model, dados.de.treinamento)
-
-print(sse)
-print(rmse)
-
-
-ploteGraficosPara(model)
+ploteGraficosPara(mlp.model)

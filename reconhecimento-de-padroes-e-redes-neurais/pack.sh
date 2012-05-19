@@ -31,8 +31,8 @@ libreoffice --headless --convert-to pdf:writer_pdf_Export *.odt
 cd ../..
 
 # ./tmp/
-echo Creating package: $OUTPUT with all the '*.{R,txt,pdf,csv}' files
-zip $OUTPUT $LABXX/$NOME/*.{R,txt,pdf,csv}
+echo Creating package: $OUTPUT with all the '*.{R,txt,pdf,csv,dat}' files
+zip $OUTPUT $LABXX/$NOME/*.{R,txt,pdf,csv,dat}
 mv $OUTPUT ..
 cd ..
 
